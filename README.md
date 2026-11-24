@@ -17,6 +17,10 @@ A lightweight, Fortnite-styled desktop tracker for keeping track of your **Sprit
 
 ## Run from Source
 If you want to modify or build the app yourself:
-```bash
-npm install
-npm start
+
+    npm install
+    npm start
+
+To package a new Windows `.exe`:
+
+    npm run build
