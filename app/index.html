@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fortnite Sprites Tracker</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,800&family=Inter:wght@500;600;700&display=swap');
+
+    :root {
+      --bg-dark: #0e131f;
+      --panel-bg: rgba(20, 28, 46, 0.85);
+      --accent-yellow: #f7e633;
+      --accent-gold: #ffb800;
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, #1e2d4a, var(--bg-dark) 65%);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 24px 32px;
+    }
+
+    /* Top Header & Progress Bar */
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 16px;
+    }
+
+    .title-group h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-style: italic;
+      font-size: 2.4rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent-yellow);
+      text-shadow: 0 2px 10px rgba(247, 230, 51, 0.3);
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 20px;
+      background: var(--panel-bg);
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.5px;
+    }
+
+    .stat span {
+      color: var(--accent-yellow);
+      font-weight: 800;
+    }
+
+    .stat.mastered span {
+      color: var(--accent-gold);
+    }
+
+    /* Controls & Filters */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+      align-items: center;
+    }
+
+    .divider {
+      width: 2px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.15);
+      margin: 0 4px;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 7px 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .filter-btn.active {
+      background: var(--accent-yellow);
+      color: #0e131f;
+      font-weight: 800;
+      border-color: var(--accent-yellow);
+    }
+
+    .search-box {
+      margin-left: auto;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+      min-width: 220px;
+    }
+
+    .search-box:focus {
+      border-color: var(--accent-yellow);
+    }
+
+    /* Larger Sprite Grid */
+    .sprite-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+      gap: 20px;
+    }
+
+    /* Individual Sprite Card */
+    .card {
+      position: relative;
+      aspect-ratio: 1 / 1.15;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: #ffffff;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+      z-index: 2;
+    }
+
+    /* Pattern Overlay Layer */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* =========================================================
+       1. STANDARD: Vibrant Fortnite Rare Blue + Angled Blueprint Tech Grid & Halftone Aura
+       ========================================================= */
+    .variant-standard {
+      background:
+        radial-gradient(circle at 50% 38%, #2998ff 0%, #0d54a3 55%, #072954 90%, #051b38 100%);
+      border-color: rgba(96, 165, 250, 0.35);
+    }
+    .variant-standard::before {
+      background-image:
+        repeating-linear-gradient(
+          -45deg,
+          rgba(255, 255, 255, 0.06) 0px,
+          rgba(255, 255, 255, 0.06) 1px,
+          transparent 1px,
+          transparent 14px
+        ),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.06) 0px,
+          rgba(255, 255, 255, 0.06) 1px,
+          transparent 1px,
+          transparent 14px
+        ),
+        radial-gradient(circle at 50% 42%, rgba(186, 230, 253, 0.25) 0%, transparent 62%);
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 35%, transparent 88%);
+    }
+
+    /* =========================================================
+       2. FORTUNE: Ruby/Peach + Faceted Low-Poly Crystal Pattern
+       ========================================================= */
+    .variant-fortune {
+      background: linear-gradient(155deg, #f3bfa5 0%, #c83737 45%, #691418 85%, #241418 100%);
+      border-color: rgba(252, 165, 165, 0.35);
+    }
+    .variant-fortune::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill-opacity='0.22'%3E%3Cpolygon fill='%23ffffff' points='0,0 75,25 40,85'/%3E%3Cpolygon fill='%23000000' points='75,25 140,0 115,75'/%3E%3Cpolygon fill='%23ffffff' points='140,0 200,45 115,75'/%3E%3Cpolygon fill='%23000000' points='0,0 40,85 0,130'/%3E%3Cpolygon fill='%23ffffff' points='40,85 115,75 85,145'/%3E%3Cpolygon fill='%23000000' points='115,75 200,45 175,130'/%3E%3Cpolygon fill='%23ffffff' points='200,45 200,150 175,130'/%3E%3Cpolygon fill='%23000000' points='0,130 85,145 35,200'/%3E%3Cpolygon fill='%23ffffff' points='85,145 175,130 135,200'/%3E%3Cpolygon fill='%23000000' points='175,130 200,200 135,200'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 160px 160px;
+      mix-blend-mode: overlay;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 45%, transparent 95%);
+    }
+
+    /* =========================================================
+       3. GOLD: Liquid Molten Gold + Champagne Specular Flare & Topographic Gold Waves
+       ========================================================= */
+    .variant-gold {
+      background:
+        radial-gradient(circle at 22% 18%, #fef08a 0%, rgba(254, 240, 138, 0) 48%),
+        linear-gradient(150deg, #facc15 0%, #ca8a04 48%, #78350f 86%, #291805 100%);
+      border-color: rgba(253, 224, 71, 0.45);
+    }
+    .variant-gold::before {
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.22' stroke-width='2'%3E%3Cpath d='M-20 40 Q 60 10, 130 50 T 260 40'/%3E%3Cpath d='M-20 85 Q 70 50, 145 95 T 260 80'/%3E%3Cpath d='M-20 130 Q 55 105, 135 140 T 260 125'/%3E%3Cpath d='M-20 175 Q 75 145, 150 185 T 260 170'/%3E%3C/g%3E%3Cg fill='%23fef9c3' fill-opacity='0.45'%3E%3Ccircle cx='42' cy='38' r='2'/%3E%3Ccircle cx='185' cy='52' r='1.5'/%3E%3Ccircle cx='160' cy='115' r='2.2'/%3E%3Ccircle cx='58' cy='128' r='1.5'/%3E%3Ccircle cx='195' cy='160' r='1.8'/%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(125deg, transparent 28%, rgba(255, 255, 255, 0.28) 46%, transparent 62%);
+      background-size: 220px 220px, 100% 100%;
+      mix-blend-mode: overlay;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 42%, transparent 92%);
+    }
+
+    /* =========================================================
+       4. CURSED: Emerald Teal to Bronze + Swirling Smoke/Mist Texture
+       ========================================================= */
+    .variant-cursed {
+      background: linear-gradient(145deg, #24635a 0%, #3d483e 45%, #664129 82%, #1d1c21 100%);
+      border-color: rgba(94, 234, 212, 0.28);
+    }
+    .variant-cursed::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='smoke'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.025' numOctaves='4' seed='8'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.28 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23smoke)'/%3E%3C/svg%3E");
+      background-size: cover;
+      mix-blend-mode: screen;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 45%, transparent 95%);
+    }
+
+    /* =========================================================
+       5. SPECIAL: Royal Purple + Subtle Starburst/Glow
+       ========================================================= */
+    .variant-special {
+      background: radial-gradient(circle at 50% 35%, #8c279e 0%, #481154 70%, #24082b 100%);
+      border-color: rgba(232, 121, 249, 0.35);
+    }
+    .variant-special::before {
+      background: repeating-conic-gradient(
+        from 0deg at 50% 42%,
+        rgba(255, 255, 255, 0.06) 0deg 10deg,
+        transparent 10deg 20deg
+      );
+      mask-image: radial-gradient(circle at 50% 42%, black 20%, transparent 75%);
+    }
+
+    /* Unowned / Locked Silhouette State */
+    .card.unowned {
+      background: #182032 !important;
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+    .card.unowned::before {
+      display: none;
+    }
+
+    .card.unowned img {
+      filter: brightness(0) invert(0.18);
+      opacity: 0.75;
+    }
+
+    .card.unowned .sprite-name {
+      color: var(--text-muted);
+    }
+
+    /* Mastered State */
+    .card.mastered {
+      border: 2px solid var(--accent-gold);
+      box-shadow: 0 0 18px rgba(255, 184, 0, 0.45);
+    }
+
+    /* Top Badges */
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .sprite-id {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.95rem;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: #e2e8f0;
+    }
+
+    .crown-badge {
+      font-size: 1.3rem;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+      display: none;
+    }
+
+    .card.mastered .crown-badge {
+      display: block;
+    }
+
+    /* Much Larger Sprite Artwork */
+    .sprite-img-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 1;
+      margin: -6px 0;
+    }
+
+    .sprite-img-wrap img {
+      width: 94%;
+      height: 94%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.6));
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .card:hover .sprite-img-wrap img {
+      transform: scale(1.04);
+    }
+
+    /* Bottom Name, Category & Level Tag */
+    .card-bottom {
+      z-index: 2;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 65%, transparent);
+      margin: -10px;
+      padding: 18px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .badges-row {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      min-height: 20px;
+    }
+
+    .lvl-badge {
+      background: #ffffff;
+      color: #0e131f;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-style: italic;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    .card.unowned .lvl-badge {
+      display: none;
+    }
+
+    .variant-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #e2e8f0;
+    }
+
+    .variant-tag.cursed { color: #5eead4; }
+    .variant-tag.fortune { color: #fca5a5; }
+    .variant-tag.gold { color: #fde047; }
+    .variant-tag.special { color: #e879f9; }
+
+    .sprite-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1.1;
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hint {
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title-group">
+      <h1>Sprites Collection</h1>
+    </div>
+    <div class="stats-bar">
+      <div class="stat">OWNED: <span id="owned-count">0</span> / <span id="total-count">0</span></div>
+      <div class="stat mastered">MASTERED: <span id="mastered-count">0</span> / <span id="total-count-2">0</span></div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <button class="filter-btn active" data-status="all">All</button>
+    <button class="filter-btn" data-status="owned">Owned</button>
+    <button class="filter-btn" data-status="mastered">Mastered</button>
+    <button class="filter-btn" data-status="unowned">Missing</button>
+
+    <div class="divider"></div>
+
+    <button class="filter-btn variant-btn active" data-variant="all">All Categories</button>
+    <button class="filter-btn variant-btn" data-variant="standard">Standard</button>
+    <button class="filter-btn variant-btn" data-variant="fortune">Fortune</button>
+    <button class="filter-btn variant-btn" data-variant="gold">Gold</button>
+    <button class="filter-btn variant-btn" data-variant="cursed">Cursed</button>
+
+    <input type="text" class="search-box" id="search-input" placeholder="Search sprite name or #..." />
+  </div>
+
+  <div class="sprite-grid" id="sprite-grid"></div>
+
+  <p class="hint">
+    Tip: <strong>Left-click</strong> a card to cycle Unowned → Owned → Mastered. <strong>Right-click</strong> an owned sprite to cycle Level 1–5.
+  </p>
+
+  <script>
+    const IMAGE_FOLDER = "./images/";
+
+    const NAME_MAP = {
+      PeelyBones: "Halfpeel'd",
+      Parrot: "Re-Pete",
+      BarrelOfFish: "Barry O'Fish",
+      Compass: "Wayfinder",
+      TreasureChest: "Chester",
+      UnbotheredFish: "Kelper",
+      TreasureMap: "Exmarks",
+      Squibbly: "Lil' Squibbly",
+      PirateCalamari: "Squiplash",
+      PlaymakerBrewery: "Lil' Flacko",
+      RookGecko: "Lil' Uzi Vert Jr.",
+      CoinPile: "Plundarrgh",
+      LushlyZest: "Mini Miku",
+      FeedJet: "Transponder Snail",
+      WhiteTiger: "Sir Oscar the Second"
+    };
+
+    const RAW_FILES = [
+      "T_Icon_BR_Creature_Sprite_PeelyBones_L.webp",
+      "T_Icon_BR_Creature_Sprite_PeelyBones_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_PeelyBones_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_PeelyBones_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_Parrot_L.webp",
+      "T_Icon_BR_Creature_Sprite_Parrot_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_Parrot_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_Parrot_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_BarrelOfFish_L.webp",
+      "T_Icon_BR_Creature_Sprite_BarrelOfFish_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_BarrelOfFish_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_BarrelOfFish_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_Compass_L.webp",
+      "T_Icon_BR_Creature_Sprite_Compass_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_Compass_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_Compass_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_TreasureChest_L.webp",
+      "T_Icon_BR_Creature_Sprite_TreasureChest_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_TreasureChest_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_TreasureChest_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_UnbotheredFish_L.webp",
+      "T_Icon_BR_Creature_Sprite_UnbotheredFish_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_UnbotheredFish_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_UnbotheredFish_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_TreasureMap_L.webp",
+      "T_Icon_BR_Creature_Sprite_TreasureMap_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_TreasureMap_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_TreasureMap_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_SquibblySprite_L.webp",
+      "T_Icon_BR_Creature_Sprite_SquibblySprite_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_Squibbly_LiquidGold_ui_v1_1_Alpha_L.webp",
+      "T_Icon_BR_Creature_Sprite_SquibblySprite_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_PirateCalamari_L.webp",
+      "T_Icon_BR_Creature_Sprite_PirateCalamari_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_PirateCalamari_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_PirateCalamari_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_PlaymakerBrewery_L.webp",
+      "T_Icon_BR_Creature_Sprite_PlaymakerBrewery_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_PlaymakerBrewery_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_PlaymakerBrewery_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_RookGecko_L.webp",
+      "T_Icon_BR_Creature_Sprite_RookGecko_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_RookGecko_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_RookGecko_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_CoinPile_L.webp",
+      "T_Icon_BR_Creature_Sprite_CoinPile_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_CoinPile_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_CoinPile_Cursed_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_LushlyZest_ui_v2_1_Alpha_L.webp",
+      "T_Icon_BR_Creature_Sprite_LushlyZest_Jeweled_ui_v1_1_Alpha_L.webp",
+      "T_Icon_BR_Creature_Sprite_LushlyZest_LiquidGold_ui_v1_1_Alpha_L.webp",
+      "T_Icon_BR_Creature_Sprite_LushlyZest_Cursed_ui_v1_1_Alpha_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_FeedJet_L.webp",
+
+      "T_Icon_BR_Creature_Sprite_WhiteTiger_L.webp",
+      "T_Icon_BR_Creature_Sprite_WhiteTiger_Jeweled_L.webp",
+      "T_Icon_BR_Creature_Sprite_WhiteTiger_LiquidGold_L.webp",
+      "T_Icon_BR_Creature_Sprite_WhiteTiger_Cursed_L.webp"
+    ];
+
+    const SPRITES = RAW_FILES.map((file, index) => {
+      let clean = file
+        .replace("T_Icon_BR_Creature_Sprite_", "")
+        .replace(/_ui_v\d+_\d+_Alpha/g, "")
+        .replace("_L.webp", "");
+
+      let variant = "standard";
+      let variantLabel = "";
+
+      if (clean.includes("_Cursed")) {
+        variant = "cursed";
+        variantLabel = "Cursed";
+        clean = clean.replace("_Cursed", "");
+      } else if (clean.includes("_Jeweled")) {
+        variant = "fortune";
+        variantLabel = "Fortune";
+        clean = clean.replace("_Jeweled", "");
+      } else if (clean.includes("_LiquidGold")) {
+        variant = "gold";
+        variantLabel = "Gold";
+        clean = clean.replace("_LiquidGold", "");
+      }
+
+      clean = clean.replace("SquibblySprite", "Squibbly");
+
+      if (clean === "FeedJet") {
+        variant = "special";
+        variantLabel = "Special";
+      }
+
+      const displayName = NAME_MAP[clean] || clean.replace(/([A-Z])/g, " $1").trim();
+
+      return {
+        id: index + 1,
+        key: file,
+        name: displayName,
+        variant,
+        variantLabel,
+        img: IMAGE_FOLDER + file
+      };
+    });
+
+    let progress = JSON.parse(localStorage.getItem("fortnite_sprites_v2")) || {};
+    let statusFilter = "all";
+    let variantFilter = "all";
+    let searchQuery = "";
+
+    function saveProgress() {
+      localStorage.setItem("fortnite_sprites_v2", JSON.stringify(progress));
+    }
+
+    function render() {
+      const grid = document.getElementById("sprite-grid");
+      grid.innerHTML = "";
+
+      let ownedTotal = 0;
+      let masteredTotal = 0;
+
+      SPRITES.forEach(sprite => {
+        const state = progress[sprite.key] || { status: "unowned", level: 1 };
+        if (state.status === "owned" || state.status === "mastered") ownedTotal++;
+        if (state.status === "mastered") masteredTotal++;
+
+        if (statusFilter === "owned" && state.status === "unowned") return;
+        if (statusFilter === "mastered" && state.status !== "mastered") return;
+        if (statusFilter === "unowned" && state.status !== "unowned") return;
+
+        if (variantFilter !== "all" && sprite.variant !== variantFilter) return;
+
+        const fullLabel = `${sprite.variantLabel} ${sprite.name}`.toLowerCase();
+        const matchesSearch =
+          fullLabel.includes(searchQuery) ||
+          String(sprite.id).includes(searchQuery);
+        if (!matchesSearch) return;
+
+        const card = document.createElement("div");
+        card.className = `card variant-${sprite.variant} ${state.status}`;
+
+        const variantBadgeHTML = sprite.variantLabel
+          ? `<span class="variant-tag ${sprite.variant}">${sprite.variantLabel}</span>`
+          : "";
+
+        card.innerHTML = `
+          <div class="card-top">
+            <span class="sprite-id">#${sprite.id}</span>
+            <span class="crown-badge" title="Mastered">👑</span>
+          </div>
+          <div class="sprite-img-wrap">
+            <img src="${sprite.img}" alt="${sprite.name}" loading="lazy" />
+          </div>
+          <div class="card-bottom">
+            <div class="badges-row">
+              <span class="lvl-badge">Lvl ${state.level}</span>
+              ${variantBadgeHTML}
+            </div>
+            <div class="sprite-name" title="${sprite.variantLabel ? sprite.variantLabel + ' ' : ''}${sprite.name}">
+              ${sprite.name}
+            </div>
+          </div>
+        `;
+
+        card.addEventListener("click", () => {
+          const order = ["unowned", "owned", "mastered"];
+          const nextStatus = order[(order.indexOf(state.status) + 1) % order.length];
+          progress[sprite.key] = { status: nextStatus, level: state.level || 1 };
+          saveProgress();
+          render();
+        });
+
+        card.addEventListener("contextmenu", (e) => {
+          e.preventDefault();
+          if (state.status === "unowned") return;
+          const nextLevel = state.level >= 5 ? 1 : state.level + 1;
+          progress[sprite.key] = { ...state, level: nextLevel };
+          saveProgress();
+          render();
+        });
+
+        grid.appendChild(card);
+      });
+
+      document.getElementById("owned-count").textContent = ownedTotal;
+      document.getElementById("mastered-count").textContent = masteredTotal;
+      document.getElementById("total-count").textContent = SPRITES.length;
+      document.getElementById("total-count-2").textContent = SPRITES.length;
+    }
+
+    document.querySelectorAll(".filter-btn[data-status]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn[data-status]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        statusFilter = btn.dataset.status;
+        render();
+      });
+    });
+
+    document.querySelectorAll(".filter-btn[data-variant]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn[data-variant]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        variantFilter = btn.dataset.variant;
+        render();
+      });
+    });
+
+    document.getElementById("search-input").addEventListener("input", (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

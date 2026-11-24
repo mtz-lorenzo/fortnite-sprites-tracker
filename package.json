@@ -1,0 +1,14 @@
+{
+  "name": "fortnite-sprites-tracker",
+  "version": "1.0.0",
+  "description": "Fortnite Sprites Collection & Mastery Tracker",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . SpritesTracker --platform=win32 --arch=x64 --icon=icon.ico --out=dist --overwrite"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-packager": "^17.1.2"
+  }
+}
